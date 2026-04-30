@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    
+    /* Types et Libs */
+    "lib": ["esnext"],
+    "types": ["node"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+
+    /* Sortie */
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    /* Strict */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    
+    /* On désactive cette ligne si l'import de dotenv pose souci */
+    "noUncheckedSideEffectImports": false 
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "prisma.config.ts"]
+}
