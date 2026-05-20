@@ -27,5 +27,6 @@ export declare const stylesheetService: {
         createdAt: Date | null;
         updatedAt: Date | null;
     }>;
+    deleteSchema(stylesheetId: number, userId: number): Promise<void>;
 };
 //# sourceMappingURL=stylesheet.service.d.ts.map

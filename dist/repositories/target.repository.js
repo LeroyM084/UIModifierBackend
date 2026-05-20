@@ -20,5 +20,8 @@ export const targetRepository = {
        ORDER BY id ASC`, [stylesheetId]);
         return result.rows.map((row) => toTarget(row));
     },
+    async deleteByStylesheetId(stylesheetId) {
+        await pool.query("DELETE FROM targets WHERE stylesheet_id = $1", [stylesheetId]);
+    },
 };
 //# sourceMappingURL=target.repository.js.map

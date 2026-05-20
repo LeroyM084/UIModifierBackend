@@ -61,10 +61,35 @@ export const stylesheetService = {
       throw new HttpError(500, "Schema update failed");
     }
 
+    let targets = await targetRepository.findByStylesheetId(updated.id);
+
+    if (input.urlPatterns !== undefined) {
+      await targetRepository.deleteByStylesheetId(updated.id);
+      for (const urlPattern of input.urlPatterns) {
+        await targetRepository.create({ stylesheetId: updated.id, urlPattern });
+      }
+      targets = await targetRepository.findByStylesheetId(updated.id);
+    }
+
     return {
       ...updated,
-      targets: await targetRepository.findByStylesheetId(updated.id),
+      targets,
       requestedUrlPatterns: input.urlPatterns ?? [],
     };
+  },
+
+  async deleteSchema(stylesheetId: number, userId: number): Promise<void> {
+    const stylesheet = await stylesheetRepository.findById(stylesheetId);
+
+    if (!stylesheet) {
+      throw new HttpError(404, "Schema not found");
+    }
+
+    if (stylesheet.userId !== userId) {
+      throw new HttpError(403, "Unauthorized");
+    }
+
+    await targetRepository.deleteByStylesheetId(stylesheetId);
+    await stylesheetRepository.delete(stylesheetId);
   },
 };

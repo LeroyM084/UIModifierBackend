@@ -2,15 +2,15 @@ import type { Request, Response } from "express";
 import { stylesheetService } from "../services/stylesheet.service.js";
 
 export async function saveSchema(request: Request, response: Response) {
-  const { userId, name, cssContent, urlPatterns } = request.body as {
-    userId?: number;
+  const { name, cssContent, urlPatterns } = request.body as {
     name?: string;
     cssContent?: string;
     urlPatterns?: string[];
   };
+  const userId = request.user!.userId;
 
   const schema = await stylesheetService.saveSchema(
-    userId ?? 0,
+    userId,
     name ?? "",
     cssContent ?? "",
     urlPatterns ?? [],
@@ -20,7 +20,7 @@ export async function saveSchema(request: Request, response: Response) {
 }
 
 export async function getSchema(request: Request, response: Response) {
-  const userId = Number(request.params.userId);
+  const userId = request.user!.userId;
   const name = String(request.params.name);
 
   const schema = await stylesheetService.getSchema(userId, name);
@@ -28,7 +28,7 @@ export async function getSchema(request: Request, response: Response) {
 }
 
 export async function listSchemasByUser(request: Request, response: Response) {
-  const userId = Number(request.params.userId);
+  const userId = request.user!.userId;
 
   const schemas = await stylesheetService.listByUser(userId);
   response.status(200).json(schemas);
@@ -51,4 +51,12 @@ export async function updateSchema(request: Request, response: Response) {
   });
 
   response.status(200).json(schema);
+}
+
+export async function deleteSchema(request: Request, response: Response) {
+  const stylesheetId = Number(request.params.id);
+  const userId = request.user!.userId;
+
+  await stylesheetService.deleteSchema(stylesheetId, userId);
+  response.status(200).json({ message: "Schema deleted successfully" });
 }
