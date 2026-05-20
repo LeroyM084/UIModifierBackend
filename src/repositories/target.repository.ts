@@ -38,4 +38,8 @@ export const targetRepository = {
 
     return result.rows.map((row) => toTarget(row));
   },
+
+  async deleteByStylesheetId(stylesheetId: number): Promise<void> {
+    await pool.query("DELETE FROM targets WHERE stylesheet_id = $1", [stylesheetId]);
+  },
 };

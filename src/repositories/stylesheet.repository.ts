@@ -87,4 +87,8 @@ export const stylesheetRepository = {
 
     return result.rows[0] ? toStylesheet(result.rows[0]) : null;
   },
+
+  async delete(id: number): Promise<void> {
+    await pool.query("DELETE FROM stylesheets WHERE id = $1", [id]);
+  },
 };

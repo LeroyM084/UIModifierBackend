@@ -15,7 +15,22 @@ export async function registerUser(request: Request, response: Response) {
 export async function loginUser(request: Request, response: Response) {
   const { email, password } = request.body as { email?: string; password?: string };
 
-  const user = await userService.login(email ?? "", password ?? "");
-  response.status(200).json(user);
+  const result = await userService.login(email ?? "", password ?? "");
+  response.status(200).json(result);
+}
+
+export async function refreshToken(request: Request, response: Response) {
+  const { refreshToken } = request.body as { refreshToken?: string };
+
+  if (!refreshToken) {
+    return response.status(400).json({ error: "Refresh token is required" });
+  }
+
+  const result = await userService.refresh(refreshToken);
+  response.status(200).json(result);
+}
+
+export async function logoutUser(request: Request, response: Response) {
+  response.status(200).json({ message: "Logged out successfully" });
 }
 

@@ -50,5 +50,8 @@ export const stylesheetRepository = {
        RETURNING id, user_id, name, css_content, is_active, created_at, updated_at`, [id, input.userId ?? null, input.name ?? null, input.cssContent ?? null, input.isActive ?? null]);
         return result.rows[0] ? toStylesheet(result.rows[0]) : null;
     },
+    async delete(id) {
+        await pool.query("DELETE FROM stylesheets WHERE id = $1", [id]);
+    },
 };
 //# sourceMappingURL=stylesheet.repository.js.map
